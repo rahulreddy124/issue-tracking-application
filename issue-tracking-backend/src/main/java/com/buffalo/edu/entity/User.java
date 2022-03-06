@@ -19,7 +19,7 @@ public class User {
 	private String email;
 	private String mobileNum;
 	@ManyToOne
-	Role role;
+	private Role role;
 	
 	public User() {
 		super();
@@ -74,6 +74,15 @@ public class User {
 	public void setMobileNum(String mobileNum) {
 		this.mobileNum = mobileNum;
 	}
+	
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 
 	@Override
 	public String toString() {

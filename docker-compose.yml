@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+
+  postgresqldb:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=issuetrackingdb
+
+  backend:
+    container_name: issue-tracking-backend
+    image: issue-tracking-backend
+    build:
+      context: ./issue-tracking-backend
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresqldb
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresqldb:5431/issuetrackingdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  frontend:
+    container_name: issue-tracking-frontend
+    build:
+      context: ./issue-tracking-frontend
+      dockerfile: ./Dockerfile
+    image: "issue-tracking-frontend"
+    stdin_open: true
+    ports:
+      - "3000:3000"
+    links:
+      - "backend:server"
+  
+
+  
